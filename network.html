@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+            padding: 0 25px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-profile-sidebar {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+        }
+        
+        .search-filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+        }
+        
+        .filter-select {
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .member-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .member-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 20px;
+        }
+        
+        .member-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .member-role {
+            color: var(--accent-orange);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .member-location {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .skill-tag {
+            padding: 4px 12px;
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--accent-orange);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .member-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .btn-connected {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            cursor: default;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-filter-bar {
+                flex-direction: column;
+            }
+            .search-box {
+                min-width: 100%;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <span class="logo-icon">🚀</span>
+                <span>Arewa Hub</span>
+            </h1>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Main</h3>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="courses.html">
+                    <span class="nav-icon">🎓</span>
+                    <span>My Courses</span>
+                </a></li>
+                <li><a href="network.html" class="active">
+                    <span class="nav-icon">👥</span>
+                    <span>Network</span>
+                </a></li>
+                <li><a href="events.html">
+                    <span class="nav-icon">📅</span>
+                    <span>Events</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-links">
+                <li><a href="profile.html">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a></li>
+                <li><a href="settings.html">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a></li>
+                <li><a href="help.html">
+                    <span class="nav-icon">❓</span>
+                    <span>Help Center</span>
+                </a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="user-profile-sidebar">
+            <div class="user-avatar" id="sidebarAvatar">AB</div>
+            <div class="user-info">
+                <h4 id="sidebarName">Aisha Bello</h4>
+                <p id="sidebarRole">Member</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="page-header">
+            <h1>👥 Network</h1>
+            <p>Connect with tech professionals, mentors, and learners across Northern Nigeria.</p>
+        </div>
+        
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" id="searchInput" placeholder="Search members by name or skill...">
+            </div>
+            <select class="filter-select" id="locationFilter">
+                <option value="all">All Locations</option>
+                <option value="kano">Kano</option>
+                <option value="kaduna">Kaduna</option>
+                <option value="sokoto">Sokoto</option>
+                <option value="abuja">Abuja</option>
+            </select>
+            <select class="filter-select" id="roleFilter">
+                <option value="all">All Roles</option>
+                <option value="developer">Developer</option>
+                <option value="designer">Designer</option>
+                <option value="data">Data Scientist</option>
+                <option value="mentor">Mentor</option>
+            </select>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('all', this)">All Members</button>
+            <button class="tab" onclick="switchTab('connections', this)">My Connections</button>
+            <button class="tab" onclick="switchTab('mentors', this)">Mentors</button>
+        </div>
+        
+        <div class="members-grid" id="membersGrid">
+            <!-- Members loaded by JS -->
+        </div>
+    </main>
+
+    <script>
+        // Auth check
+        const currentUserRaw = localStorage.getItem('arewa_current_user');
+        if (!currentUserRaw) {
+            window.location.href = 'login.html';
+        }
+        
+        const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+        
+        const members = [
+            { id: 1, name: 'Musa Sani', role: 'Full-Stack Developer', location: 'Kaduna', skills: ['React', 'Node.js', 'Python'], connected: false, isMentor: true },
+            { id: 2, name: 'Fatima Mohammed', role: 'Mobile Developer', location: 'Sokoto', skills: ['Flutter', 'Dart', 'Firebase'], connected: false, isMentor: false },
+            { id: 3, name: 'Ibrahim Abdullahi', role: 'Data Scientist', location: 'Kano', skills: ['Python', 'TensorFlow', 'SQL'], connected: true, isMentor: true },
+            { id: 4, name: 'Amina Yusuf', role: 'UI/UX Designer', location: 'Abuja', skills: ['Figma', 'Adobe XD', 'Prototyping'], connected: false, isMentor: false },
+            { id: 5, name: 'Umar Bello', role: 'DevOps Engineer', location: 'Kano', skills: ['Docker', 'AWS', 'Kubernetes'], connected: false, isMentor: true },
+            { id: 6, name: 'Zainab Ali', role: 'Frontend Developer', location: 'Kaduna', skills: ['Vue.js', 'CSS', 'JavaScript'], connected: true, isMentor: false },
+            { id: 7, name: 'Abubakar Sule', role: 'Cybersecurity Expert', location: 'Sokoto', skills: ['Penetration Testing', 'Network Security'], connected: false, isMentor: true },
+            { id: 8, name: 'Halima Garba', role: 'Product Manager', location: 'Abuja', skills: ['Agile', 'Scrum', 'Strategy'], connected: false, isMentor: false },
+        ];
+        
+        let currentTab = 'all';
+        
+        function loadUserInfo() {
+            if (!currentUser) return;
+            const initials = (currentUser.firstName?.[0] || 'A') + (currentUser.lastName?.[0] || 'B');
+            const fullName = (currentUser.firstName || 'Aisha') + ' ' + (currentUser.lastName || 'Bello');
+            const role = currentUser.accountType ? currentUser.accountType.charAt(0).toUpperCase() + currentUser.accountType.slice(1) : 'Member';
+            
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarRole').textContent = role;
+        }
+        
+        loadUserInfo();
+        
+        function renderMembers() {
+            const grid = document.getElementById('membersGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const location = document.getElementById('locationFilter').value;
+            const role = document.getElementById('roleFilter').value;
+            
+            let filtered = members.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(search) || m.skills.some(s => s.toLowerCase().includes(search));
+                const matchesLocation = location === 'all' || m.location.toLowerCase() === location;
+                const matchesRole = role === 'all' || m.role.toLowerCase().includes(role);
+                const matchesTab = currentTab === 'all' || 
+                    (currentTab === 'connections' && m.connected) || 
+                    (currentTab === 'mentors' && m.isMentor);
+                return matchesSearch && matchesLocation && matchesRole && matchesTab;
+            });
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary);"><h2>No members found</h2><p>Try adjusting your search or filters.</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(member => {
+                const initials = member.name.split(' ').map(n => n[0]).join('');
+                return `
+                    <div class="member-card">
+                        <div class="member-avatar">${initials}</div>
+                        <h3>${member.name}</h3>
+                        <div class="member-role">${member.role}</div>
+                        <div class="member-location">📍 ${member.location}</div>
+                        <div class="member-skills">
+                            ${member.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+                        </div>
+                        <div class="member-actions">
+                            ${member.connected 
+                                ? `<button class="btn btn-connected" disabled>✅ Connected</button>`
+                                : `<button class="btn btn-primary" onclick="connectMember(${member.id})">Connect</button>`
+                            }
+                            <button class="btn btn-secondary" onclick="viewProfile(${member.id})">View</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderMembers();
+        }
+        
+        function connectMember(id) {
+            const member = members.find(m => m.id === id);
+            if (member) {
+                member.connected = true;
+                alert(`🎉 Connection request sent to ${member.name}!`);
+                renderMembers();
+            }
+        }
+        
+        function viewProfile(id) {
+            const member = members.find(m => m.id === id);
+            if (member) {
+                alert(`👤 ${member.name}\\n\\nRole: ${member.role}\\nLocation: ${member.location}\\nSkills: ${member.skills.join(', ')}\\n${member.isMentor ? '⭐ Mentor' : ''}`);
+            }
+        }
+        
+        document.getElementById('searchInput').addEventListener('input', renderMembers);
+        document.getElementById('locationFilter').addEventListener('change', renderMembers);
+        document.getElementById('roleFilter').addEventListener('change', renderMembers);
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+        
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('arewa_current_user');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        renderMembers();
+    </script>
+</body>
+</html>
