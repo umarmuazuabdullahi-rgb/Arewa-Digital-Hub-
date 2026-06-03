@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+            padding: 0 25px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-profile-sidebar {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .profile-info h2 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--accent-gold);
+        }
+        
+        .profile-info p {
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .profile-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(255, 152, 0, 0.15);
+            color: var(--accent-orange);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        /* Profile Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .profile-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .message.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .message.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            display: block;
+        }
+        
+        .readonly-field {
+            background: rgba(255, 255, 255, 0.02) !important;
+            cursor: not-allowed;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <span class="logo-icon">🚀</span>
+                <span>Arewa Hub</span>
+            </h1>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Main</h3>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="courses.html">
+                    <span class="nav-icon">🎓</span>
+                    <span>My Courses</span>
+                </a></li>
+                <li><a href="network.html">
+                    <span class="nav-icon">👥</span>
+                    <span>Network</span>
+                </a></li>
+                <li><a href="events.html">
+                    <span class="nav-icon">📅</span>
+                    <span>Events</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-links">
+                <li><a href="profile.html" class="active">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a></li>
+                <li><a href="settings.html">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a></li>
+                <li><a href="help.html">
+                    <span class="nav-icon">❓</span>
+                    <span>Help Center</span>
+                </a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="user-profile-sidebar">
+            <div class="user-avatar" id="sidebarAvatar">AB</div>
+            <div class="user-info">
+                <h4 id="sidebarName">Aisha Bello</h4>
+                <p id="sidebarRole">Member</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="message" id="formMessage"></div>
+        
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">AB</div>
+            <div class="profile-info">
+                <h2 id="profileName">Aisha Bello</h2>
+                <p id="profileEmail">aisha.bello@example.com</p>
+                <p id="profileLocation">📍 Kano, Nigeria</p>
+                <div class="profile-badges">
+                    <span class="badge" id="badgeType">Professional</span>
+                    <span class="badge" id="badgeExperience">Intermediate</span>
+                    <span class="badge">⭐ Active Member</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-grid">
+            <div class="profile-card">
+                <h3>👤 Personal Information</h3>
+                <form id="personalForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="firstName" placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="emailField" class="readonly-field" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phoneField" placeholder="Phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <select id="locationField">
+                            <option value="">Select state</option>
+                            <option value="kano">Kano</option>
+                            <option value="kaduna">Kaduna</option>
+                            <option value="katsina">Katsina</option>
+                            <option value="sokoto">Sokoto</option>
+                            <option value="zamfara">Zamfara</option>
+                            <option value="kebbi">Kebbi</option>
+                            <option value="bauchi">Bauchi</option>
+                            <option value="borno">Borno</option>
+                            <option value="yobe">Yobe</option>
+                            <option value="gombe">Gombe</option>
+                            <option value="adamawa">Adamawa</option>
+                            <option value="plateau">Plateau</option>
+                            <option value="nasarawa">Nasarawa</option>
+                            <option value="abuja">Abuja FCT</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea id="bioField" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                </form>
+            </div>
+            
+            <div class="profile-card">
+                <h3>🔒 Security</h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="Enter current password">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">🔑 Update Password</button>
+                </form>
+                
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 30px 0;">
+                
+                <h3>⚠️ Danger Zone</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Once you delete your account, there is no going back. Please be certain.</p>
+                <button class="btn btn-danger" onclick="deleteAccount()">🗑️ Delete Account</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Auth check
+        const currentUserRaw = localStorage.getItem('arewa_current_user');
+        if (!currentUserRaw) {
+            window.location.href = 'login.html';
+        }
+        
+        const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+        
+        // Load user data
+        function loadUserData() {
+            if (!currentUser) return;
+            
+            const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+            const fullUser = users.find(u => u.id === currentUser.id) || currentUser;
+            
+            const initials = (fullUser.firstName?.[0] || 'A') + (fullUser.lastName?.[0] || 'B');
+            const fullName = (fullUser.firstName || 'Aisha') + ' ' + (fullUser.lastName || 'Bello');
+            const role = fullUser.accountType ? fullUser.accountType.charAt(0).toUpperCase() + fullUser.accountType.slice(1) : 'Member';
+            const location = fullUser.location ? fullUser.location.charAt(0).toUpperCase() + fullUser.location.slice(1) : 'Nigeria';
+            
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarRole').textContent = role;
+            
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = fullUser.email || '';
+            document.getElementById('profileLocation').textContent = '📍 ' + location;
+            document.getElementById('badgeType').textContent = role;
+            document.getElementById('badgeExperience').textContent = fullUser.experience ? fullUser.experience.charAt(0).toUpperCase() + fullUser.experience.slice(1) : 'Beginner';
+            
+            // Fill form
+            document.getElementById('firstName').value = fullUser.firstName || '';
+            document.getElementById('lastName').value = fullUser.lastName || '';
+            document.getElementById('emailField').value = fullUser.email || '';
+            document.getElementById('phoneField').value = fullUser.phone || '';
+            document.getElementById('locationField').value = fullUser.location || '';
+            document.getElementById('bioField').value = fullUser.bio || '';
+        }
+        
+        loadUserData();
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+        
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        // Save personal info
+        document.getElementById('personalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                users[userIndex].firstName = document.getElementById('firstName').value;
+                users[userIndex].lastName = document.getElementById('lastName').value;
+                users[userIndex].phone = document.getElementById('phoneField').value;
+                users[userIndex].location = document.getElementById('locationField').value;
+                users[userIndex].bio = document.getElementById('bioField').value;
+                
+                localStorage.setItem('arewa_users', JSON.stringify(users));
+                
+                // Update session
+                currentUser.firstName = users[userIndex].firstName;
+                currentUser.lastName = users[userIndex].lastName;
+                currentUser.location = users[userIndex].location;
+                localStorage.setItem('arewa_current_user', JSON.stringify(currentUser));
+                
+                showMessage('success', '✅ Profile updated successfully!');
+                loadUserData();
+            }
+        });
+        
+        // Update password
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPw = document.getElementById('currentPassword').value;
+            const newPw = document.getElementById('newPassword').value;
+            const confirmPw = document.getElementById('confirmNewPassword').value;
+            
+            const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex === -1) {
+                showMessage('error', 'User not found');
+                return;
+            }
+            
+            if (users[userIndex].password !== currentPw) {
+                showMessage('error', '❌ Current password is incorrect');
+                return;
+            }
+            
+            if (newPw.length < 8) {
+                showMessage('error', '❌ New password must be at least 8 characters');
+                return;
+            }
+            
+            if (newPw !== confirmPw) {
+                showMessage('error', '❌ Passwords do not match');
+                return;
+            }
+            
+            users[userIndex].password = newPw;
+            localStorage.setItem('arewa_users', JSON.stringify(users));
+            
+            showMessage('success', '✅ Password updated successfully!');
+            document.getElementById('passwordForm').reset();
+        });
+        
+        function showMessage(type, text) {
+            const msg = document.getElementById('formMessage');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            setTimeout(() => { msg.style.display = 'none'; }, 5000);
+        }
+        
+        function deleteAccount() {
+            if (!confirm('⚠️ Are you sure you want to delete your account? This action cannot be undone!')) return;
+            if (!confirm('🚨 This will permanently delete all your data. Click OK to confirm.')) return;
+            
+            const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+            const filtered = users.filter(u => u.id !== currentUser.id);
+            localStorage.setItem('arewa_users', JSON.stringify(filtered));
+            localStorage.removeItem('arewa_current_user');
+            
+            alert('Your account has been deleted.');
+            window.location.href = 'index.html';
+        }
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('arewa_current_user');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

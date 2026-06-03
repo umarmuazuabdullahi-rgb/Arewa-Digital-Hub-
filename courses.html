@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+            padding: 0 25px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-profile-sidebar {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            color: var(--accent-gold);
+        }
+        
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            width: 300px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+        }
+        
+        .filter-select {
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .course-image {
+            height: 160px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(33, 150, 243, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .course-content {
+            padding: 25px;
+        }
+        
+        .course-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 152, 0, 0.15);
+            color: var(--accent-orange);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .course-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .course-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .course-meta span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .course-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent-orange), #FF5722);
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .enroll-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .enroll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .enroll-btn.enrolled {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-filter {
+                width: 100%;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <span class="logo-icon">🚀</span>
+                <span>Arewa Hub</span>
+            </h1>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Main</h3>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="courses.html" class="active">
+                    <span class="nav-icon">🎓</span>
+                    <span>My Courses</span>
+                </a></li>
+                <li><a href="network.html">
+                    <span class="nav-icon">👥</span>
+                    <span>Network</span>
+                </a></li>
+                <li><a href="events.html">
+                    <span class="nav-icon">📅</span>
+                    <span>Events</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-links">
+                <li><a href="profile.html">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a></li>
+                <li><a href="settings.html">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a></li>
+                <li><a href="help.html">
+                    <span class="nav-icon">❓</span>
+                    <span>Help Center</span>
+                </a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="user-profile-sidebar">
+            <div class="user-avatar" id="sidebarAvatar">AB</div>
+            <div class="user-info">
+                <h4 id="sidebarName">Aisha Bello</h4>
+                <p id="sidebarRole">Member</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="page-header">
+            <h1>🎓 Courses</h1>
+            <div class="search-filter">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search courses...">
+                </div>
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="web">Web Development</option>
+                    <option value="mobile">Mobile Development</option>
+                    <option value="data">Data Science</option>
+                    <option value="ai">AI & ML</option>
+                    <option value="security">Cybersecurity</option>
+                    <option value="design">UI/UX Design</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('all', this)">All Courses</button>
+            <button class="tab" onclick="switchTab('enrolled', this)">My Enrolled</button>
+            <button class="tab" onclick="switchTab('completed', this)">Completed</button>
+        </div>
+        
+        <div class="courses-grid" id="coursesGrid">
+            <!-- Courses will be loaded by JavaScript -->
+        </div>
+    </main>
+
+    <script>
+        // Auth check
+        const currentUserRaw = localStorage.getItem('arewa_current_user');
+        if (!currentUserRaw) {
+            window.location.href = 'login.html';
+        }
+        
+        const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+        
+        // Course data
+        const courses = [
+            { id: 1, title: 'Full-Stack Web Development', desc: 'Master React, Node.js, and MongoDB to build modern web applications.', icon: '🌐', tag: 'Web Dev', duration: '16 Weeks', lessons: 48, enrolled: true, progress: 75, category: 'web' },
+            { id: 2, title: 'Mobile App Development', desc: 'Build cross-platform mobile apps with Flutter and Dart framework.', icon: '📱', tag: 'Mobile', duration: '20 Weeks', lessons: 60, enrolled: true, progress: 45, category: 'mobile' },
+            { id: 3, title: 'AI & Machine Learning', desc: 'Introduction to Python, TensorFlow, and ML algorithms.', icon: '🤖', tag: 'AI/ML', duration: '20 Weeks', lessons: 55, enrolled: true, progress: 30, category: 'ai' },
+            { id: 4, title: 'Cybersecurity Basics', desc: 'Learn essential security practices for developers and IT professionals.', icon: '🛡️', tag: 'Security', duration: '12 Weeks', lessons: 36, enrolled: false, progress: 0, category: 'security' },
+            { id: 5, title: 'UI/UX Design Masterclass', desc: 'Create beautiful user interfaces and experiences with Figma.', icon: '🎨', tag: 'Design', duration: '10 Weeks', lessons: 30, enrolled: false, progress: 0, category: 'design' },
+            { id: 6, title: 'Data Science with Python', desc: 'Analyze data, create visualizations, and build predictive models.', icon: '📊', tag: 'Data Science', duration: '16 Weeks', lessons: 48, enrolled: false, progress: 0, category: 'data' },
+            { id: 7, title: 'DevOps & Cloud Computing', desc: 'Learn Docker, Kubernetes, AWS, and CI/CD pipelines.', icon: '☁️', tag: 'DevOps', duration: '14 Weeks', lessons: 42, enrolled: false, progress: 0, category: 'web' },
+            { id: 8, title: 'Blockchain Development', desc: 'Build decentralized applications with Ethereum and Solidity.', icon: '⛓️', tag: 'Blockchain', duration: '12 Weeks', lessons: 36, enrolled: false, progress: 0, category: 'web' }
+        ];
+        
+        let currentTab = 'all';
+        
+        function loadUserInfo() {
+            if (!currentUser) return;
+            const initials = (currentUser.firstName?.[0] || 'A') + (currentUser.lastName?.[0] || 'B');
+            const fullName = (currentUser.firstName || 'Aisha') + ' ' + (currentUser.lastName || 'Bello');
+            const role = currentUser.accountType ? currentUser.accountType.charAt(0).toUpperCase() + currentUser.accountType.slice(1) : 'Member';
+            
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarRole').textContent = role;
+        }
+        
+        loadUserInfo();
+        
+        function renderCourses() {
+            const grid = document.getElementById('coursesGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            
+            let filtered = courses.filter(c => {
+                const matchesSearch = c.title.toLowerCase().includes(search) || c.desc.toLowerCase().includes(search);
+                const matchesCategory = category === 'all' || c.category === category;
+                const matchesTab = currentTab === 'all' || 
+                    (currentTab === 'enrolled' && c.enrolled) || 
+                    (currentTab === 'completed' && c.progress === 100);
+                return matchesSearch && matchesCategory && matchesTab;
+            });
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary);"><h2>No courses found</h2><p>Try adjusting your search or filter.</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(course => `
+                <div class="course-card" onclick="openCourse(${course.id})">
+                    <div class="course-image">${course.icon}</div>
+                    <div class="course-content">
+                        <span class="course-tag">${course.tag}</span>
+                        <h3>${course.title}</h3>
+                        <p>${course.desc}</p>
+                        <div class="course-meta">
+                            <span>⏱️ ${course.duration}</span>
+                            <span>📚 ${course.lessons} Lessons</span>
+                        </div>
+                        ${course.enrolled ? `
+                            <div class="course-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${course.progress}%;"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span>${course.progress}% Complete</span>
+                                    <span>${Math.round(course.lessons * course.progress / 100)}/${course.lessons}</span>
+                                </div>
+                            </div>
+                            <button class="enroll-btn enrolled" onclick="event.stopPropagation(); continueCourse(${course.id})">Continue Learning</button>
+                        ` : `
+                            <button class="enroll-btn" onclick="event.stopPropagation(); enrollCourse(${course.id})">Enroll Now</button>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderCourses();
+        }
+        
+        function enrollCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                course.enrolled = true;
+                course.progress = 0;
+                alert(`🎉 You have successfully enrolled in "${course.title}"!`);
+                renderCourses();
+            }
+        }
+        
+        function continueCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                alert(`📚 Opening "${course.title}"... Continue from where you left off!`);
+            }
+        }
+        
+        function openCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                alert(`📖 Course: ${course.title}\\n\\n${course.desc}\\n\\nDuration: ${course.duration}\\nLessons: ${course.lessons}`);
+            }
+        }
+        
+        document.getElementById('searchInput').addEventListener('input', renderCourses);
+        document.getElementById('categoryFilter').addEventListener('change', renderCourses);
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+        
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('arewa_current_user');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        renderCourses();
+    </script>
+</body>
+</html>

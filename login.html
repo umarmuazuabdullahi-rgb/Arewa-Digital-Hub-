@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Arewa Digital Hub</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #4CAF50, #2196F3);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-shadow: 2px 2px 4px black;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .login-btn {
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            background-color: #F57C00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .link {
+            color: #FFD700;
+            text-decoration: none;
+            margin: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .welcome-text {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .separator {
+            margin: 25px 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .separator::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .separator-text {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .social-login {
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            background-color: white;
+            color: #333;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-btn.google:hover {
+            background-color: #DB4437;
+            color: white;
+        }
+
+        .social-btn.github:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        .error-message {
+            color: #FF6B6B;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .show-password input {
+            width: auto;
+            margin: 0;
+        }
+
+        .show-password label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            body {
+                padding: 20px;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🔐</div>
+        <h1>Arewa Digital Hub</h1>
+        <div class="welcome-text">Welcome Back! Please login to continue</div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm" action="#" method="post">
+            <div class="form-group">
+                <label for="email">Email or Username</label>
+                <input type="text" id="email" name="email" placeholder="Enter your email or username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <div class="show-password">
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword">Show Password</label>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+
+            <div class="separator">
+                <span class="separator-text">OR</span>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn google" onclick="loginWithGoogle()">
+                    <span>G</span> Continue with Google
+                </button>
+                <button type="button" class="social-btn github" onclick="loginWithGithub()">
+                    <span>⚡</span> Continue with GitHub
+                </button>
+            </div>
+
+            <div class="footer-links">
+                <a href="forgot-password.html" class="link">Forgot Password?</a>
+                <a href="register.html" class="link">Create New Account</a>
+                <a href="index.html" class="link">Back to Home</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Check if already logged in
+        const currentUser = localStorage.getItem('arewa_current_user');
+        if (currentUser) {
+            window.location.href = 'dashboard.html';
+        }
+
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            passwordField.type = document.getElementById('showPassword').checked ? 'text' : 'password';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in all fields';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            const submitBtn = document.getElementById('loginBtn');
+            submitBtn.textContent = 'Logging in...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                // Check against registered users in localStorage
+                const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+                const user = users.find(u => 
+                    (u.email === email || u.username === email) && u.password === password
+                );
+
+                if (user) {
+                    // Store session
+                    localStorage.setItem('arewa_current_user', JSON.stringify({
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        username: user.username,
+                        accountType: user.accountType,
+                        location: user.location,
+                        loginTime: new Date().toISOString()
+                    }));
+
+                    submitBtn.textContent = 'Success! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 800);
+                } else {
+                    // Also allow demo login for testing
+                    if (email === 'demo@arewa.com' && password === 'demo123') {
+                        localStorage.setItem('arewa_current_user', JSON.stringify({
+                            id: 'demo',
+                            firstName: 'Demo',
+                            lastName: 'User',
+                            email: 'demo@arewa.com',
+                            username: 'demouser',
+                            accountType: 'professional',
+                            location: 'kano',
+                            loginTime: new Date().toISOString()
+                        }));
+                        submitBtn.textContent = 'Success! Redirecting...';
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 800);
+                    } else {
+                        errorMessage.textContent = 'Invalid email/username or password';
+                        errorMessage.style.display = 'block';
+                        submitBtn.textContent = 'Login';
+                        submitBtn.disabled = false;
+                    }
+                }
+            }, 1000);
+        });
+
+        function loginWithGoogle() {
+            alert('Google login would be implemented with Firebase Auth');
+        }
+
+        function loginWithGithub() {
+            alert('GitHub login would be implemented with Firebase Auth');
+        }
+
+        document.getElementById('email').addEventListener('input', function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        });
+
+        window.onload = function() {
+            document.getElementById('email').focus();
+        };
+    </script>
+</body>
+</html>

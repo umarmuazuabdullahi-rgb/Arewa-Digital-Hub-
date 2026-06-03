@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+            padding: 0 25px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-profile-sidebar {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .event-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 30px;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .event-card:hover {
+            border-color: var(--accent-orange);
+            transform: translateX(5px);
+        }
+        
+        .event-date-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 87, 34, 0.15));
+            border-radius: 12px;
+            min-width: 100px;
+        }
+        
+        .event-date-box .day {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-orange);
+            line-height: 1;
+        }
+        
+        .event-date-box .month {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        .event-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .event-info p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .event-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .event-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .event-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .event-tag.virtual {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        
+        .event-tag.in-person {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .event-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .btn-registered {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            cursor: default;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .event-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .event-date-box {
+                margin: 0 auto;
+            }
+            .event-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <span class="logo-icon">🚀</span>
+                <span>Arewa Hub</span>
+            </h1>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Main</h3>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="courses.html">
+                    <span class="nav-icon">🎓</span>
+                    <span>My Courses</span>
+                </a></li>
+                <li><a href="network.html">
+                    <span class="nav-icon">👥</span>
+                    <span>Network</span>
+                </a></li>
+                <li><a href="events.html" class="active">
+                    <span class="nav-icon">📅</span>
+                    <span>Events</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-links">
+                <li><a href="profile.html">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a></li>
+                <li><a href="settings.html">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a></li>
+                <li><a href="help.html">
+                    <span class="nav-icon">❓</span>
+                    <span>Help Center</span>
+                </a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="user-profile-sidebar">
+            <div class="user-avatar" id="sidebarAvatar">AB</div>
+            <div class="user-info">
+                <h4 id="sidebarName">Aisha Bello</h4>
+                <p id="sidebarRole">Member</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="page-header">
+            <h1>📅 Events & Meetups</h1>
+            <p>Join our upcoming events, workshops, and networking sessions across Northern Nigeria.</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('upcoming', this)">Upcoming</button>
+            <button class="tab" onclick="switchTab('registered', this)">My Events</button>
+            <button class="tab" onclick="switchTab('past', this)">Past Events</button>
+        </div>
+        
+        <div class="events-list" id="eventsList">
+            <!-- Events loaded by JS -->
+        </div>
+    </main>
+
+    <script>
+        // Auth check
+        const currentUserRaw = localStorage.getItem('arewa_current_user');
+        if (!currentUserRaw) {
+            window.location.href = 'login.html';
+        }
+        
+        const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+        
+        const events = [
+            { id: 1, title: 'Tech Meetup Kano', desc: 'Networking event for tech professionals in Kano State. Meet industry leaders, share ideas, and explore collaboration opportunities.', day: '15', month: 'Feb', time: '6:00 PM', location: 'Virtual', type: 'virtual', registered: false },
+            { id: 2, title: 'Career Workshop', desc: 'Learn how to build an impressive tech portfolio, ace interviews, and land your dream job in the tech industry.', day: '20', month: 'Feb', time: '10:00 AM', location: 'Abuja', type: 'in-person', registered: false },
+            { id: 3, title: 'Hackathon 2024', desc: '48-hour coding competition with ₦500k prize pool. Build innovative solutions for real-world problems in Northern Nigeria.', day: '25', month: 'Feb', time: 'All Day', location: 'Virtual', type: 'virtual', registered: false },
+            { id: 4, title: 'Flutter Workshop', desc: 'Hands-on workshop covering Flutter basics to advanced topics. Build your first cross-platform mobile app.', day: '05', month: 'Mar', time: '2:00 PM', location: 'Kaduna', type: 'in-person', registered: false },
+            { id: 5, title: 'Women in Tech Summit', desc: 'Celebrating and empowering women in technology across Northern Nigeria. Keynote speakers, panel discussions, and mentorship sessions.', day: '12', month: 'Mar', time: '9:00 AM', location: 'Kano', type: 'in-person', registered: false },
+            { id: 6, title: 'AI & Data Science Bootcamp', desc: 'Intensive 3-day bootcamp on machine learning, data analysis, and AI applications. Perfect for beginners and intermediates.', day: '18', month: 'Mar', time: '10:00 AM', location: 'Virtual', type: 'virtual', registered: false }
+        ];
+        
+        let currentTab = 'upcoming';
+        
+        function loadUserInfo() {
+            if (!currentUser) return;
+            const initials = (currentUser.firstName?.[0] || 'A') + (currentUser.lastName?.[0] || 'B');
+            const fullName = (currentUser.firstName || 'Aisha') + ' ' + (currentUser.lastName || 'Bello');
+            const role = currentUser.accountType ? currentUser.accountType.charAt(0).toUpperCase() + currentUser.accountType.slice(1) : 'Member';
+            
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarRole').textContent = role;
+        }
+        
+        loadUserInfo();
+        
+        function renderEvents() {
+            const list = document.getElementById('eventsList');
+            
+            let filtered = events;
+            if (currentTab === 'registered') {
+                filtered = events.filter(e => e.registered);
+            } else if (currentTab === 'past') {
+                list.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);"><h2>No past events yet</h2><p>Events you attend will appear here.</p></div>';
+                return;
+            }
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);"><h2>No events found</h2><p>Check back later for new events!</p></div>';
+                return;
+            }
+            
+            list.innerHTML = filtered.map(event => `
+                <div class="event-card">
+                    <div class="event-date-box">
+                        <div class="day">${event.day}</div>
+                        <div class="month">${event.month}</div>
+                    </div>
+                    <div class="event-info">
+                        <span class="event-tag ${event.type}">${event.type === 'virtual' ? '🌐 Virtual' : '📍 In-Person'}</span>
+                        <h3>${event.title}</h3>
+                        <p>${event.desc}</p>
+                        <div class="event-meta">
+                            <span>⏰ ${event.time}</span>
+                            <span>📍 ${event.location}</span>
+                        </div>
+                    </div>
+                    <div class="event-actions">
+                        ${event.registered 
+                            ? `<button class="btn btn-registered" disabled>✅ Registered</button>`
+                            : `<button class="btn btn-primary" onclick="registerEvent(${event.id})">Register</button>`
+                        }
+                        <button class="btn btn-secondary" onclick="viewEvent(${event.id})">Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderEvents();
+        }
+        
+        function registerEvent(id) {
+            const event = events.find(e => e.id === id);
+            if (event) {
+                event.registered = true;
+                alert(`🎉 You have successfully registered for "${event.title}"!`);
+                renderEvents();
+            }
+        }
+        
+        function viewEvent(id) {
+            const event = events.find(e => e.id === id);
+            if (event) {
+                alert(`📅 ${event.title}\\n\\n${event.desc}\\n\\n📍 Location: ${event.location}\\n⏰ Time: ${event.time}\\n📆 Date: ${event.day} ${event.month}`);
+            }
+        }
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+        
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('arewa_current_user');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        renderEvents();
+    </script>
+</body>
+</html>

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+        
+        .nav-logo span {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-orange);
+            background: rgba(255, 152, 0, 0.1);
+        }
+        
+        .nav-btn {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white !important;
+            padding: 10px 24px !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 120px 50px 60px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1));
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Search */
+        .search-section {
+            padding: 40px 50px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus-within {
+            border-color: var(--accent-orange);
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+        }
+        
+        .search-box button {
+            padding: 16px 30px;
+            background: var(--accent-orange);
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: #F57C00;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            padding: 40px 50px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .faq-item:hover {
+            border-color: var(--accent-orange);
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .faq-question:hover {
+            color: var(--accent-orange);
+        }
+        
+        .faq-toggle {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+            color: var(--accent-orange);
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 25px 20px;
+            max-height: 300px;
+        }
+        
+        /* Contact */
+        .contact-section {
+            padding: 60px 50px;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(33, 150, 243, 0.05));
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .contact-info h2 {
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .contact-method span:first-child {
+            font-size: 1.5rem;
+        }
+        
+        .contact-method h4 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+        
+        .contact-method p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text-secondary);
+        }
+        
+        .contact-form {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .contact-form h3 {
+            margin-bottom: 25px;
+            color: var(--accent-gold);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .message.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .message.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            display: block;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--card-bg);
+            padding: 30px 50px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .hero {
+                padding: 100px 20px 40px;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .faq-section, .search-section {
+                padding: 30px 20px;
+            }
+            .contact-section {
+                padding: 40px 20px;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <span>🚀</span>
+            Arewa Digital Hub
+        </a>
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="courses.html">Courses</a>
+            <a href="network.html">Network</a>
+            <a href="help.html">Help</a>
+            <a href="login.html" class="nav-btn">Login</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>❓ Help Center</h1>
+        <p>Find answers to common questions or get in touch with our support team.</p>
+    </section>
+
+    <section class="search-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for answers...">
+            <button onclick="searchFAQ()">Search</button>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>How do I create an account?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Click on "Get Started" or "Register" button on the homepage. Fill in your personal information, choose a username and password, select your interests, and agree to our terms. Your account will be ready instantly!
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>Is membership free?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Yes! Basic membership is completely free. You get access to community features, networking, and select free courses. Premium courses and advanced features may require a subscription.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>I forgot my password. What should I do?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Click on "Forgot Password?" on the login page. Enter your registered email address, and we will send you a password reset link. Follow the instructions in the email to create a new password.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>How do I enroll in a course?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                After logging in, go to the Courses section or Dashboard. Browse available courses and click "Enroll" on any course you are interested in. You can start learning immediately after enrollment.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>Can I connect with other members?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Absolutely! Use the Network section to find and connect with other members. You can filter by location, skills, and experience level. Send connection requests and start building your professional network.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>How do I update my profile?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Go to your Dashboard and click on "Profile" in the sidebar, or click on your avatar in the top right corner and select "My Profile". You can update your photo, bio, skills, and other information there.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>Are the events virtual or in-person?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                We host both virtual and in-person events. Virtual events are accessible from anywhere, while in-person events are held in various cities across Northern Nigeria. Check the Events section for details on each event.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>How can I become a mentor?</span>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                If you have significant experience in tech, you can apply to become a mentor. Go to your Profile settings and select "Apply as Mentor". Our team will review your application and get back to you within 5 business days.
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Still Need Help?</h2>
+                <p>Our support team is here to assist you. Reach out through any of these channels or send us a message directly.</p>
+                
+                <div class="contact-method">
+                    <span>📧</span>
+                    <div>
+                        <h4>Email</h4>
+                        <p>support@arewadigitalhub.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <span>📱</span>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+234 800 123 4567</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <span>💬</span>
+                    <div>
+                        <h4>WhatsApp</h4>
+                        <p>+234 800 123 4567</p>
+                    </div>
+                </div>
+                
+                <div class="contact-method">
+                    <span>📍</span>
+                    <div>
+                        <h4>Office</h4>
+                        <p>Kano State, Nigeria</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3>Send a Message</h3>
+                <div class="message" id="formMessage"></div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" required>
+                            <option value="">Select a topic</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="account">Account Issues</option>
+                            <option value="courses">Course Questions</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="billing">Billing & Payments</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Describe your issue or question..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2024 Arewa Digital Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+        
+        function toggleFAQ(element) {
+            const item = element.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            
+            // Open clicked if it wasn't active
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        }
+        
+        function searchFAQ() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchFAQ();
+        });
+        
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('formMessage');
+            
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                msg.textContent = '✅ Message sent successfully! We will get back to you within 24 hours.';
+                msg.className = 'message success';
+                this.reset();
+                btn.textContent = 'Send Message';
+                btn.disabled = false;
+                
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 5000);
+            }, 1500);
+        });
+        
+        // Check auth and update nav
+        const currentUser = localStorage.getItem('arewa_current_user');
+        if (currentUser) {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.innerHTML = `
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="courses.html">Courses</a>
+                <a href="network.html">Network</a>
+                <a href="help.html">Help</a>
+                <a href="dashboard.html" class="nav-btn">My Account</a>
+            `;
+        }
+    </script>
+</body>
+</html>

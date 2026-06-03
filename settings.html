@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Arewa Digital Hub</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --accent-gold: #FFD700;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 30px;
+            padding: 0 25px;
+        }
+        
+        .nav-section h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .user-profile-sidebar {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-orange), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .user-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            min-height: 100vh;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin-bottom: 30px;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .settings-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .settings-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .setting-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--border-color);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .toggle.active {
+            background: var(--accent-orange);
+        }
+        
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+        
+        .toggle.active::after {
+            left: 26px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #FF5722);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .language-select {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .language-select:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .message.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <span class="logo-icon">🚀</span>
+                <span>Arewa Hub</span>
+            </h1>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Main</h3>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="courses.html">
+                    <span class="nav-icon">🎓</span>
+                    <span>My Courses</span>
+                </a></li>
+                <li><a href="network.html">
+                    <span class="nav-icon">👥</span>
+                    <span>Network</span>
+                </a></li>
+                <li><a href="events.html">
+                    <span class="nav-icon">📅</span>
+                    <span>Events</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3>Account</h3>
+            <ul class="nav-links">
+                <li><a href="profile.html">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a></li>
+                <li><a href="settings.html" class="active">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a></li>
+                <li><a href="help.html">
+                    <span class="nav-icon">❓</span>
+                    <span>Help Center</span>
+                </a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <div class="user-profile-sidebar">
+            <div class="user-avatar" id="sidebarAvatar">AB</div>
+            <div class="user-info">
+                <h4 id="sidebarName">Aisha Bello</h4>
+                <p id="sidebarRole">Member</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="message" id="formMessage"></div>
+        
+        <h1 class="page-title">⚙️ Settings</h1>
+        
+        <div class="settings-grid">
+            <div class="settings-card">
+                <h3>🔔 Notifications</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Email Notifications</h4>
+                        <p>Receive updates about courses and events</p>
+                    </div>
+                    <div class="toggle active" id="emailNotif" onclick="toggleSetting(this, 'emailNotifications')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Push Notifications</h4>
+                        <p>Get real-time alerts in your browser</p>
+                    </div>
+                    <div class="toggle active" id="pushNotif" onclick="toggleSetting(this, 'pushNotifications')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Weekly Digest</h4>
+                        <p>Summary of your weekly activity</p>
+                    </div>
+                    <div class="toggle" id="weeklyDigest" onclick="toggleSetting(this, 'weeklyDigest')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>New Connection Alerts</h4>
+                        <p>When someone sends you a connection request</p>
+                    </div>
+                    <div class="toggle active" id="connAlert" onclick="toggleSetting(this, 'connectionAlerts')"></div>
+                </div>
+            </div>
+            
+            <div class="settings-card">
+                <h3>🌐 Preferences</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Language</h4>
+                        <p>Choose your preferred language</p>
+                    </div>
+                    <select class="language-select" id="languageSelect" onchange="saveLanguage()">
+                        <option value="en">English</option>
+                        <option value="ha">Hausa</option>
+                        <option value="ar">Arabic</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Dark Mode</h4>
+                        <p>Toggle between light and dark themes</p>
+                    </div>
+                    <div class="toggle active" id="darkMode" onclick="toggleSetting(this, 'darkMode')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Public Profile</h4>
+                        <p>Allow others to see your profile</p>
+                    </div>
+                    <div class="toggle active" id="publicProfile" onclick="toggleSetting(this, 'publicProfile')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Show Activity Status</h4>
+                        <p>Let others see when you are online</p>
+                    </div>
+                    <div class="toggle" id="activityStatus" onclick="toggleSetting(this, 'activityStatus')"></div>
+                </div>
+            </div>
+            
+            <div class="settings-card">
+                <h3>🔒 Privacy & Security</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Two-Factor Authentication</h4>
+                        <p>Add an extra layer of security</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="alert('2FA setup coming soon!')">Enable</button>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Download My Data</h4>
+                        <p>Get a copy of all your data</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="downloadData()">Download</button>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Clear Cache</h4>
+                        <p>Remove temporary files</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="clearCache()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="settings-card">
+                <h3>💾 Data Management</h3>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Auto-Save Progress</h4>
+                        <p>Automatically save course progress</p>
+                    </div>
+                    <div class="toggle active" id="autoSave" onclick="toggleSetting(this, 'autoSave')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Offline Mode</h4>
+                        <p>Download content for offline viewing</p>
+                    </div>
+                    <div class="toggle" id="offlineMode" onclick="toggleSetting(this, 'offlineMode')"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Reset All Settings</h4>
+                        <p>Restore default settings</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="resetSettings()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Auth check
+        const currentUserRaw = localStorage.getItem('arewa_current_user');
+        if (!currentUserRaw) {
+            window.location.href = 'login.html';
+        }
+        
+        const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+        
+        // Load sidebar info
+        function loadUserInfo() {
+            if (!currentUser) return;
+            const initials = (currentUser.firstName?.[0] || 'A') + (currentUser.lastName?.[0] || 'B');
+            const fullName = (currentUser.firstName || 'Aisha') + ' ' + (currentUser.lastName || 'Bello');
+            const role = currentUser.accountType ? currentUser.accountType.charAt(0).toUpperCase() + currentUser.accountType.slice(1) : 'Member';
+            
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarRole').textContent = role;
+        }
+        
+        loadUserInfo();
+        
+        // Load saved settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('arewa_settings') || '{}');
+            
+            Object.keys(settings).forEach(key => {
+                const toggle = document.querySelector(`[onclick*="'${key}'"]`);
+                if (toggle) {
+                    toggle.classList.toggle('active', settings[key]);
+                }
+            });
+            
+            if (settings.language) {
+                document.getElementById('languageSelect').value = settings.language;
+            }
+        }
+        
+        loadSettings();
+        
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+        
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        });
+        
+        function toggleSetting(element, key) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            
+            const settings = JSON.parse(localStorage.getItem('arewa_settings') || '{}');
+            settings[key] = isActive;
+            localStorage.setItem('arewa_settings', JSON.stringify(settings));
+            
+            showMessage('success', '✅ Setting saved!');
+        }
+        
+        function saveLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const settings = JSON.parse(localStorage.getItem('arewa_settings') || '{}');
+            settings.language = lang;
+            localStorage.setItem('arewa_settings', JSON.stringify(settings));
+            showMessage('success', '✅ Language preference saved!');
+        }
+        
+        function downloadData() {
+            const users = JSON.parse(localStorage.getItem('arewa_users') || '[]');
+            const user = users.find(u => u.id === currentUser.id);
+            
+            if (user) {
+                const dataStr = JSON.stringify(user, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'my-data.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                showMessage('success', '✅ Your data has been downloaded!');
+            }
+        }
+        
+        function clearCache() {
+            localStorage.removeItem('arewa_settings');
+            showMessage('success', '✅ Cache cleared!');
+            setTimeout(() => location.reload(), 1000);
+        }
+        
+        function resetSettings() {
+            if (confirm('Are you sure you want to reset all settings to default?')) {
+                localStorage.removeItem('arewa_settings');
+                showMessage('success', '✅ Settings reset to default!');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+        
+        function showMessage(type, text) {
+            const msg = document.getElementById('formMessage');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        }
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('arewa_current_user');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
